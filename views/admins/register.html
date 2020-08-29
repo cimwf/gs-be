@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <title>H+ 后台主题UI框架 - 注册</title>
+    <meta name="keywords" content="H+后台主题,后台bootstrap框架,会员中心主题,后台HTML,响应式后台">
+    <meta name="description" content="H+是一个完全响应式，基于Bootstrap3最新版本开发的扁平化主题，她采用了主流的左右两栏式布局，使用了Html5+CSS3等现代技术">
+
+    <link rel="shortcut icon" href="/favicon.ico"> <link href="/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+    <link href="/css/plugins/iCheck/custom.css" rel="stylesheet">
+    <link href="/css/animate.css" rel="stylesheet">
+    <link href="/css/style.css?v=4.1.0" rel="stylesheet">
+
+</head>
+
+<body class="gray-bg">
+
+    <div class="middle-box text-center loginscreen   animated fadeInDown">
+        <div>
+            <div>
+
+                <h1 class="logo-name">H+</h1>
+
+            </div>
+            <h3>欢迎注册 H+</h3>
+            <p>创建一个H+新账户</p>
+            <form class="m-t" role="form">
+                <div class="form-group">
+                    <input type="text" name='username' class="form-control" placeholder="请输入用户名" required="">
+                </div>
+                <div class="form-group">
+                    <input type="password"  name='password' class="form-control password" placeholder="请输入密码" required="">
+                </div>
+                <div class="form-group">
+                    <input type="password"   name='againPassword' class="form-control password" placeholder="请再次输入密码" required="">
+                </div>
+                <div class="form-group text-left">
+                    <div class="checkbox i-checks">
+                        <label class="no-padding">
+                            <input class='checkbox' type="checkbox"><i></i> 我同意注册协议</label>
+                    </div>
+                </div>
+                <div class="btn btn-primary block full-width m-b">注 册</div>
+
+                <p class="text-muted text-center"><small>已经有账户了？</small><a href="/admin/login">点此登录</a>
+                </p>
+
+            </form>
+        </div>
+    </div>
+
+    <!-- 全局js -->
+    <script src="/js/jquery.min.js?v=2.1.4"></script>
+    <script src="/js/bootstrap.min.js?v=3.3.6"></script>
+    <!-- iCheck -->
+    <script src="/js/plugins/iCheck/icheck.min.js"></script>
+    <script src="/js/plugins/layer/layer.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('.i-checks').iCheck({
+                checkboxClass: 'icheckbox_square-green',
+                radioClass: 'iradio_square-green',
+            });
+        });
+        // function layerPasswordAgain(){
+        //     layer.tips('Hi，我是tips','#againPassword' );
+        // }
+
+        window.onload = function(){
+            var btn = document.getElementsByClassName('btn')[0]
+            var passwordNode = document.getElementsByClassName('password')
+            var checkbox= document.getElementsByClassName('checkbox')[1]
+            var iCheckHelper = document.getElementsByClassName('iCheck-helper')[0]
+
+            btn.onclick = function(){
+                console.log(passwordNode[0].value);
+                console.log(passwordNode[1].value);
+                if(passwordNode[0].value !== passwordNode[1].value){
+                    layer.tips('密码有误',passwordNode[1],{tips: [2,'red']});
+                }else if(!checkbox.checked){
+                    layer.tips('您还没有同意呢',iCheckHelper,{tips: [1,'red']});
+                }else{
+                    $.ajax({
+                        url: '/admin/register',
+                        type: 'POST',
+                        data:{
+                            username: $('.form-control').eq(0).val(),
+                            password: $('.form-control').eq(1).val()
+                        },
+                        dataType: 'json',
+                        success(data){
+                            console.log(data);
+                            if(data.status==200){
+                                // $(location).attr('href','/')
+                            }else{
+                                layer.tips(data.message,$('.form-control').eq(0),{tips: [2,'red']});
+                                
+                            }
+                        },
+                        error(err){
+                           
+                        }
+                    })
+                }
+            }
+
+            
+
+
+
+        }
+    </script>
+
+</body>
+
+</html>
