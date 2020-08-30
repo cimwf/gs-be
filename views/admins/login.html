@@ -13,6 +13,7 @@
 
     <link href="/css/animate.css" rel="stylesheet">
     <link href="/css/style.css?v=4.1.0" rel="stylesheet">
+    <link href="/css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
     <!--[if lt IE 9]>
     <meta http-equiv="refresh" content="0;ie.html" />
     <![endif]-->
@@ -51,6 +52,7 @@
     <script src="/js/jquery.min.js?v=2.1.4"></script>
     <script src="/js/bootstrap.min.js?v=3.3.6"></script>
     <script src="/js/plugins/layer/layer.min.js"></script>
+    <script src="/js/plugins/sweetalert/sweetalert.min.js"></script>
     <script>
         window.onload = function(){
             // console.log(location.href);
@@ -65,10 +67,18 @@
                 layer.tips('密码有误',$('.form-control').eq(1),{tips: [1,'red']});
                 // console.log(2);
             }else if(str == '2'){
-                layer.alert('今日错误次数太多了', {
-                    icon: 2,
-                    skin: 'layer-ext-moon' //该皮肤由layer.seaning.com友情扩展。关于皮肤的扩展规则，去这里查阅
-                })
+                // layer.alert('今日错误次数太多了', {
+                //     icon: 2,
+                //     skin: 'layer-ext-moon' //该皮肤由layer.seaning.com友情扩展。关于皮肤的扩展规则，去这里查阅
+                // })
+                swal({
+                    title: "出错了！",
+                    text: "今日错误次数太多了,请您下次再来吧！",
+                    type: "error",
+                },()=>{
+                    $(location).attr('href','/admin/login')
+                });
+
             }
 
             // $('.btn').eq(0).on('click',function(e){

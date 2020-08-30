@@ -87,17 +87,19 @@ module.exports = {
             // isLimit(req,res,next,isUser)
             if(isUser.limit === 3){
                 res.redirect('/admin/login?code=2')
+            }else{
+                if(isUser.password == req.body.password){
+                    // isLimit(req,res,next,isUser)
+                    req.session.username = isUser.username
+                    next()
+                }else{
+                    //密码错误之后添加限制
+                    //判断limit是否为3
+                    addLimit(req,res,isUser)
+                }
+
             }
 
-            if(isUser.password == req.body.password){
-                // isLimit(req,res,next,isUser)
-                req.session.username = isUser.username
-                next()
-            }else{
-                //密码错误之后添加限制
-                //判断limit是否为3
-                addLimit(req,res,isUser)
-            }
         }
     },
 
