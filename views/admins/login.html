@@ -64,8 +64,11 @@
             }else if(str === '1'){
                 layer.tips('密码有误',$('.form-control').eq(1),{tips: [1,'red']});
                 // console.log(2);
-            }else{
-
+            }else if(str == '2'){
+                layer.alert('今日错误次数太多了', {
+                    icon: 2,
+                    skin: 'layer-ext-moon' //该皮肤由layer.seaning.com友情扩展。关于皮肤的扩展规则，去这里查阅
+                })
             }
 
             // $('.btn').eq(0).on('click',function(e){

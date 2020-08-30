@@ -52,5 +52,15 @@ module.exports ={
             status: 200,
             message: 'success'
         })
+    },
+
+
+
+    async deleteUser(req,res){
+        await model.deleteUser(req.query.username)
+        res.send({
+            status: 200,
+            message: '删除成功'
+        })
     }
 }

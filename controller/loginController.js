@@ -1,13 +1,15 @@
 const Model = require('../models/model/model')
+const { formatDate } = require('../utils/utils')
 
 module.exports = {
     index(req,res){
         res.render('admins/login')
     },
 
-    login(req,res){
+    async login(req,res){
         console.log(req.body);
         req.session.username = req.body.username
+        // await logModel.insert()
         res.redirect('/')
     },
 
@@ -15,7 +17,12 @@ module.exports = {
         res.render('admins/register')
     },
     async registerFn(req,res){
-        let basedata = await Model.insert(req.body)
+        let basedata = {
+            ...req.body,
+            loginDate: formatDate()
+        }
+
+        await Model.insert(basedata)
         // res.redirect('/')
         res.send({
             status: '200',

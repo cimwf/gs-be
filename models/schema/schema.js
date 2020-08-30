@@ -34,4 +34,15 @@ module.exports = new Schema({
         type: String,
         default: '这个家伙很懒，什么也没有留下',
     },
+    //一天最多三次错误
+    limit: {
+        type: Number,
+        default: 0,
+        max: 3
+    },
+
+    loginDate: {
+        type: String
+    }
+    
 })

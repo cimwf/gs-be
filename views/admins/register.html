@@ -97,7 +97,7 @@
                         success(data){
                             console.log(data);
                             if(data.status==200){
-                                // $(location).attr('href','/')
+                                $(location).attr('href','/')
                             }else{
                                 layer.tips(data.message,$('.form-control').eq(0),{tips: [2,'red']});
                                 

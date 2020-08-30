@@ -17,6 +17,7 @@
     <link href="css/plugins/steps/jquery.steps.css" rel="stylesheet">
     <link href="css/animate.css" rel="stylesheet">
     <link href="css/style.css?v=4.1.0" rel="stylesheet">
+    <link href="css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
 
 </head>
 
@@ -103,11 +104,11 @@
                                         </div>
                                         <div class="form-group">
                                             <label>爱好 *</label>
-                                            <input id="hobby" name="hobby" type="text" class="form-control">
+                                            <input id="hobby" name="hobby" type="text" value='没有爱好一律按照喜欢吃屎来算' class="form-control">
                                         </div>
                                         <div class="form-group">
                                             <label>简介 *</label>
-                                            <input id="brief" name="brief" type="text" class="form-control">
+                                            <input id="brief" name="brief" type="text" value='这个家伙很懒，什么也没有留下' class="form-control">
                                         </div>
                                     </div>
                                 </div>
@@ -151,6 +152,7 @@
     <script src="js/plugins/validate/jquery.validate.min.js"></script>
     <script src="js/plugins/validate/messages_zh.min.js"></script>
     <script src="/js/plugins/layer/layer.min.js"></script>
+    <script src="js/plugins/sweetalert/sweetalert.min.js"></script>
 
 
     <script>
@@ -209,7 +211,7 @@
                     var form = $(this);
 
                     // Submit form input
-                    form.submit();
+                    // form.submit();
                 }
             }).validate({
                 errorPlacement: function (error, element) {
@@ -234,15 +236,15 @@
                 console.log(localData);
             }
 
-            var str = location.search.slice(1).split('=')[1];
-            console.log(str);
-            if(str == '0'){
-                console.log(123);
-                layer.alert('该用户已存在,请您重新注册', {
-                        icon: 2,
-                        skin: 'layer-ext-moon' 
-                })
-            }else{}
+            // var str = location.search.slice(1).split('=')[1];
+            // console.log(str);
+            // if(str == '0'){
+            //     console.log(123);
+            //     layer.alert('该用户已存在,请您重新注册', {
+            //             icon: 2,
+            //             skin: 'layer-ext-moon' 
+            //     })
+            // }else{}
 
             console.log($('.actions').children().children().eq(2));
             $('.actions').children().children().eq(2).on('click',function(e){
@@ -273,11 +275,25 @@
                             data,
                             dataType: 'json',
                             success(data){
-                                // console.log(data);
                                 if(data.status == 200){
-                                    $(location).attr('href','/table')
+                                    console.log(123123);
+                                    swal({
+                                        title: "太帅了",
+                                        text: "小手一抖就更改了一个用户",
+                                        type: "success",
+                                    },()=>{
+                                        $(location).attr('href','/table')
+                                    });
+
                                 }else{
-                                    $(location).attr('href','/form?code=0')
+                                    
+                                    swal({
+                                        title: "出错了！",
+                                        text: "该用户已存在,请您重新注册",
+                                        type: "error",
+                                    },()=>{
+                                        $(location).attr('href','/form?code=0')
+                                    });
                                 }
                             }
                         })
@@ -290,10 +306,23 @@
                             success(data){
                                 console.log(data);
                                 if(data.status == 200){
-                                    console.log(123456);
-                                    $(location).attr('href','/table')
+                                    swal({
+                                        title: "太帅了",
+                                        text: "小手一抖就给我们增加了一个新的伙伴呢",
+                                        type: "success",
+                                    },()=>{
+                                        $(location).attr('href','/table')
+                                    });
+
                                 }else{
-                                    $(location).attr('href','/form?code=0')
+                                    
+                                    swal({
+                                        title: "出错了！",
+                                        text: "该用户已存在,请您重新注册",
+                                        type: "error",
+                                    },()=>{
+                                        $(location).attr('href','/form?code=0')
+                                    });
                                 }
                                 
                             },

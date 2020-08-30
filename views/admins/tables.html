@@ -17,9 +17,12 @@
 
     <!-- jqgrid-->
     <link href="/css/plugins/jqgrid/ui.jqgrid.css?0820" rel="stylesheet">
+    <link href="css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
 
     <link href="/css/animate.css" rel="stylesheet">
     <link href="/css/style.css?v=4.1.0" rel="stylesheet">
+    <!-- Sweet Alert -->
+
 
     <style>
         /* Additional style to fix warning dialog position */
@@ -45,6 +48,7 @@
                         <!-- <h4 class="m-t">用户列表</h4> -->
                         <button type="button" class="btn btn-w-m btn-primary"><a style='color:white' href="/form">添加用户 </a> </button>
                         <button type="button" class="btn btn-w-m btn-primary">修改信息</button>
+                        <button type="button" class="btn btn-w-m btn-primary">删除用户</button>
                         <div class="jqGrid_wrapper">
                             <table id="table_list_2"></table>
                             <div id="pager_list_2"></div>
@@ -69,6 +73,7 @@
     <script src="/js/plugins/jqgrid/jquery.jqGrid.min.js?0820"></script>
     <script src="/js/plugins/layer/layer.min.js"></script>
     <script src="/js/plugins/layer/extend/layer.ext.js"></script>
+    <script src="js/plugins/sweetalert/sweetalert.min.js"></script>
     <!-- 自定义js -->
     <script src="/js/content.js?v=1.0.0"></script>
 
@@ -78,35 +83,106 @@
           
 
             
-            // layer.use('extend/layer.ext.js', function(){
-            //     layer.ext = function(){
-            //         layer.prompt({})
-            //     };
-            // });
+
             $.jgrid.defaults.styleUI = 'Bootstrap';
             // Examle data for jqGrid
-            
+            $('.btn').eq(0).on('click',function(){
+                localStorage.removeItem('data')
+            })
+
             $('.btn').eq(1).on('click',function(){
                 console.log(layer);
                 console.log($('.wrapper').eq(0));
-                layer.prompt({title: '请输入要修改的用户名', formType: 0}, function(pass, index){
-                    console.log(pass);
-                    layer.close(index);
+
+                swal({
+                    text: '请输入需要修改的用户名".',
+                    content: "input",
+                    title: '',
+                    type:'input',
+                    // button: {
+                    //     text: "Search!",
+                    //     closeModal: false,
+                    // },
+                },function(pass){
+                    if(!!pass){
+                        $.ajax({
+                            url: '/updateData',
+                            type: 'GET',
+                            data: {
+                                username:pass
+                            },
+                            success(data){
+                                console.log(data);
+                                localStorage.setItem('data',JSON.stringify(data[0]))
+                                $(location).attr('href','/form')
+                            }
+                        })
+                    }
+                   
+                })
+            })
+
+            $('.btn').eq(2).on('click',function(){
+                swal({
+                    text: '请输入需要删除的用户名".',
+                    content: "input",
+                    title: '',
+                    type:'input',
+                    closeOnConfirm:false,
+                    button: {
+                        text: "Search!",
+                        closeModal: true,
+                    },
+                },function(pass){
+                    // window.location.reload()
                     $.ajax({
-                        url: '/updateData',
+                        url: '/deleteUser',
                         type: 'GET',
                         data: {
                             username:pass
                         },
                         success(data){
                             console.log(data);
-                            localStorage.setItem('data',JSON.stringify(data[0]))
-                            $(location).attr('href','/form')
+                            
+                            if(data.status==200){
+                                swal({
+                                    title: "太帅了",
+                                    text: "小手一抖就删除了一个用户",
+                                    type: "success",
+                                },()=>{
+                                    console.log(123123);
+                                    $(location).attr('href','/table')
+                                });
+                            }else{
+                                console.log(456456);
+                                console.log(swal);
+                                // a()
+                                swal({
+                                    title: "该用户不存在",
+                                    text: "请您去列表页仔细查看",
+                                    type: "error",
+                                    // showCancelButton: true,
+                                    // confirmButtonColor: "#DD6B55",
+                                    // confirmButtonText: "删除",
+                                    // closeOnConfirm: false
+                                });
+                            }
                         }
                     })
-                   
-                });
+                })
             })
+
+            function a(){
+                swal({
+                    title: "该用户不存在",
+                    text: "请您去列表页仔细查看",
+                    type: "error",
+                    // showCancelButton: true,
+                    // confirmButtonColor: "#DD6B55",
+                    // confirmButtonText: "删除",
+                    // closeOnConfirm: false
+                });
+            }
 
             $.ajax({
                 type: 'POST',
@@ -168,7 +244,7 @@
                                 index: 'v.email',
                                 editable: true,
                                 width: 80,
-                                align: "right",
+                                // align: "right",
                                 sorttype: "float"
                             },
                             {
